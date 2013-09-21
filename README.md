@@ -26,8 +26,7 @@ A simple Python module that allows you to log into Garmin Connect and get activi
      |  
      |  get_latest(self)
      |      Return an instance of the activity class for the latest activity
-
-
+    
     class activity
      |  A class that represents a Garmin Connect activity
      |  
@@ -41,9 +40,15 @@ A simple Python module that allows you to log into Garmin Connect and get activi
      |  distance
      |      Returns the distance of the activity as a float
      |  
+     |  distance_short
+     |      Returns the distance of the activity as a decimal.Decimal
+     |  
      |  duration
-     |      Returns an instance of datetime.timedelta for the duration of the
+     |      Returns an instance of datetime.time for the duration of the
      |      activity
+     |  
+     |  duration_seconds
+     |      Returns an int of the duration of the activity in seconds
      |  
      |  json
      |      A dictionary that represents the JSON data of the activity

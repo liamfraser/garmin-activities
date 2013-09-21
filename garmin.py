@@ -26,14 +26,15 @@
 import mechanize
 import cookielib
 import simplejson
-from datetime import datetime, timedelta
+from datetime import time, datetime, timedelta
+from decimal import *
 
 class activity:
     """A class that represents a Garmin Connect activity"""
 
     def __init__(self, json):
         self._json = json
-    
+
     @property
     def json(self):
         """A dictionary that represents the JSON data of the activity"""
@@ -48,7 +49,7 @@ class activity:
 
     @property
     def duration(self):
-        """Returns an instance of datetime.timedelta for the duration of the
+        """Returns an instance of datetime.time for the duration of the
         activity"""
         
         time_string = self.json['sumDuration']['display']
@@ -56,7 +57,16 @@ class activity:
         hours = int(split[0])
         minutes = int(split[1])
         seconds = int(split[2])
-        return timedelta(hours = hours, minutes = minutes, seconds = seconds)
+        return time(hour = hours, minute = minutes, second = seconds)
+
+    @property
+    def duration_seconds(self):
+        """Returns an int of the duration of the activity in seconds"""
+
+        seconds = self.duration.hour * 60 * 60
+        seconds += self.duration.minute * 60
+        seconds += self.duration.second
+        return seconds
 
     @property
     def distance(self):
@@ -64,6 +74,13 @@ class activity:
 
         dist_string = self.json['sumDistance']['value']
         return float(dist_string)
+
+    @property
+    def distance_short(self):
+        """Returns the distance of the activity as a decimal.Decimal"""
+
+        d = Decimal(self.distance).quantize(Decimal('.01'), rounding=ROUND_UP)
+        return d
 
     @property
     def unit(self):
@@ -76,8 +93,7 @@ class activity:
     def pace(self):
         """Returns the pace as a datetime.datetime instance"""
 
-        duration_seconds = int(self.duration.total_seconds())
-        seconds_per_distance = duration_seconds / self.distance
+        seconds_per_distance = self.duration_seconds / self.distance
 
         # Convert the seconds back to minutes and seconds
         pace_td = timedelta(seconds = seconds_per_distance)
