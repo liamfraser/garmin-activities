@@ -26,6 +26,10 @@ A simple Python module that allows you to log into Garmin Connect and get activi
      |  
      |  get_latest(self)
      |      Return an instance of the activity class for the latest activity
+     |  
+     |  get_week(self, week=None)
+     |      Return a list of instances of the activity class for the week
+     |      (Monday - Sunday). Optionally takes the week of the year to get
     
     class activity
      |  A class that represents a Garmin Connect activity
@@ -35,7 +39,18 @@ A simple Python module that allows you to log into Garmin Connect and get activi
      |  __init__(self, json)
      |  
      |  ----------------------------------------------------------------------
+     |  Static methods defined here:
+     |  
+     |  pace_calculator(duration_seconds, distance)
+     |      Returns the pace as a datetime.datetime instance. Takes the duration
+     |      in seconds and distance as arguments
+     |  
+     |  ----------------------------------------------------------------------
      |  Data descriptors defined here:
+     |  
+     |  datetime
+     |      Returns the date and time that the run started as an instance of
+     |      datetime.datetime
      |  
      |  distance
      |      Returns the distance of the activity as a float
@@ -59,6 +74,13 @@ A simple Python module that allows you to log into Garmin Connect and get activi
      |  pace
      |      Returns the pace as a datetime.datetime instance
      |  
+     |  pace_unit
+     |      Returns an abbreviation of the unit in pace form
+     |  
+     |  short_unit
+     |      Returns an abbreviation of the unit
+     |  
      |  unit
      |      Returns the unit of measurement for the activity. Either 'mile' or
      |      'kilomiter'
+
